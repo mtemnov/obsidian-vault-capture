@@ -1,4 +1,4 @@
-/* obsidian-vault-capture — mobile-first styles */
+/* obsidian-vault-capture — modern mobile-first styles */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -7,16 +7,20 @@
 }
 
 :root {
-  --green: #2d6a4f;
-  --green-light: #40916c;
-  --bg: #1a1a2e;
-  --surface: #16213e;
-  --surface2: #0f3460;
-  --text: #e2e8f0;
-  --text-muted: #94a3b8;
-  --border: #334155;
-  --radius: 10px;
-  --font: system-ui, -apple-system, sans-serif;
+  --bg:            #0f0f11;
+  --surface:       #18181d;
+  --border:        rgba(255, 255, 255, 0.07);
+  --border-focus:  #3ecf8e;
+  --text:          #ececec;
+  --text-muted:    #6b6b7b;
+  --text-label:    #9898a8;
+  --green:         #3ecf8e;
+  --green-dim:     #2a9e6c;
+  --green-glow:    rgba(62, 207, 142, 0.18);
+  --radius:        14px;
+  --radius-sm:     10px;
+  --font:          system-ui, -apple-system, sans-serif;
+  --transition:    160ms ease;
 }
 
 html, body {
@@ -26,56 +30,65 @@ html, body {
   font-family: var(--font);
   font-size: 16px;
   -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
 }
 
 #app {
-  max-width: 520px;
+  max-width: 480px;
   margin: 0 auto;
-  padding: 0 16px env(safe-area-inset-bottom);
+  padding: 0 20px calc(env(safe-area-inset-bottom) + 100px);
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
 
-/* --- Header --- */
+/* ── Header ─────────────────────────────────────────── */
 
 header {
-  padding: 20px 0 12px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 0 24px;
+}
+
+.logo {
+  font-size: 1.4rem;
+  color: var(--green);
+  line-height: 1;
+  user-select: none;
 }
 
 header h1 {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  color: var(--green-light);
-  letter-spacing: 0.02em;
+  color: var(--text);
+  letter-spacing: 0.01em;
 }
 
-/* --- Form --- */
+/* ── Form ────────────────────────────────────────────── */
 
-main {
-  flex: 1;
-}
+main { flex: 1; }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
+
+/* ── Fields ──────────────────────────────────────────── */
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 7px;
 }
 
 label {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--text-label);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
 }
 
 input[type="url"],
@@ -84,76 +97,166 @@ textarea {
   width: 100%;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   color: var(--text);
   font-family: var(--font);
   font-size: 1rem;
-  padding: 12px 14px;
+  padding: 13px 15px;
   outline: none;
-  transition: border-color 0.15s;
-  resize: vertical;
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
+  resize: none;
   -webkit-appearance: none;
+  line-height: 1.5;
+}
+
+/* Auto-grow textareas start at a comfortable height */
+textarea {
+  min-height: 120px;
+  overflow: hidden;
+}
+
+textarea#shared_text {
+  min-height: 72px;
 }
 
 input[type="url"]::placeholder,
 input[type="text"]::placeholder,
 textarea::placeholder {
   color: var(--text-muted);
-  opacity: 0.6;
 }
 
 input[type="url"]:focus,
 input[type="text"]:focus,
 textarea:focus {
-  border-color: var(--green-light);
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--green-glow);
 }
 
 textarea[readonly] {
-  opacity: 0.75;
+  opacity: 0.6;
   cursor: default;
 }
 
-/* --- Submit button --- */
+/* ── Submit button ───────────────────────────────────── */
 
 button[type="submit"] {
+  position: relative;
   width: 100%;
   padding: 16px;
+  margin-top: 6px;
   background: var(--green);
-  color: #fff;
+  color: #0a1a10;
   border: none;
   border-radius: var(--radius);
   font-family: var(--font);
-  font-size: 1.05rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
   cursor: pointer;
-  transition: background 0.15s;
+  transition:
+    background var(--transition),
+    opacity var(--transition),
+    transform var(--transition);
   -webkit-appearance: none;
-  margin-bottom: 32px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
-button[type="submit"]:active {
-  background: var(--green-light);
+button[type="submit"]:active:not(:disabled) {
+  transform: scale(0.98);
+  background: var(--green-dim);
 }
 
-/* --- Utility --- */
-
-.hidden {
-  display: none !important;
+button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
+
+/* Loading state */
+.btn-spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0,0,0,0.25);
+  border-top-color: #0a1a10;
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+  flex-shrink: 0;
+}
+
+button.loading .btn-label { opacity: 0.5; }
+button.loading .btn-spinner { display: block; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Toast ───────────────────────────────────────────── */
+
+#toast {
+  position: fixed;
+  bottom: calc(env(safe-area-inset-bottom) + 24px);
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: #1e2a22;
+  color: var(--green);
+  border: 1px solid rgba(62, 207, 142, 0.25);
+  border-radius: 40px;
+  padding: 12px 22px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+  z-index: 100;
+}
+
+#toast.toast--visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+#toast.toast--error {
+  background: #2a1a1a;
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.25);
+}
+
+/* ── Utility ─────────────────────────────────────────── */
+
+.hidden { display: none !important; }
 
 .error-banner {
-  background: #3b1c1c;
-  border: 1px solid #7f1d1d;
-  color: #fca5a5;
-  border-radius: var(--radius);
+  background: #1f1212;
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  color: #f87171;
+  border-radius: var(--radius-sm);
   padding: 14px 16px;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   line-height: 1.5;
 }
 
 .error-banner code {
   font-family: monospace;
   background: rgba(0,0,0,0.3);
-  padding: 1px 4px;
+  padding: 1px 5px;
   border-radius: 4px;
+}
+
+/* Hidden GAS iframe — must be invisible but exist in DOM */
+#gas-frame {
+  position: fixed;
+  width: 0;
+  height: 0;
+  border: none;
+  opacity: 0;
+  pointer-events: none;
 }

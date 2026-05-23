@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#2d6a4f" />
+  <meta name="theme-color" content="#0f0f11" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -16,12 +16,14 @@
 <body>
   <div id="app">
     <header>
+      <span class="logo">⬡</span>
       <h1>Vault Capture</h1>
     </header>
 
     <main>
-      <!-- GAS URL is injected by main.ts from import.meta.env.VITE_APPS_SCRIPT_URL -->
-      <form id="capture-form" method="POST">
+      <!-- GAS URL injected by main.ts. Form submits into the hidden iframe so the
+           browser never navigates away — required to keep Google auth cookies. -->
+      <form id="capture-form" method="POST" target="gas-frame">
         <input type="hidden" name="destination" value="raw" />
         <input type="hidden" name="capture_method" id="capture-method" value="manual" />
 
@@ -44,7 +46,7 @@
             type="text"
             id="title"
             name="title"
-            placeholder="Optional title"
+            placeholder="Optional"
             autocomplete="off"
           />
         </div>
@@ -70,7 +72,8 @@
         </div>
 
         <button type="submit" id="submit-btn">
-          Save to vault
+          <span class="btn-label">Save to vault</span>
+          <span class="btn-spinner" aria-hidden="true"></span>
         </button>
       </form>
 
@@ -79,6 +82,12 @@
       </div>
     </main>
   </div>
+
+  <!-- Invisible iframe that absorbs the GAS response -->
+  <iframe name="gas-frame" id="gas-frame" aria-hidden="true" tabindex="-1"></iframe>
+
+  <!-- Toast notification -->
+  <div id="toast" role="status" aria-live="polite"></div>
 
   <script type="module" src="/src/main.ts"></script>
 </body>
