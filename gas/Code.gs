@@ -175,10 +175,9 @@ function successPage(destLabel, filename) {
     "</p>" +
     '<div class="bar"></div>' +
     "<script>setTimeout(function(){" +
-    "window.close();" +
-    "setTimeout(function(){location.replace('" +
+    "if(history.length>1){history.back();}else{location.replace('" +
     PWA_URL +
-    "')},1000);" +
+    "');}" +
     "},1500);</script>" +
     "</body></html>";
   return HtmlService.createHtmlOutput(html);
