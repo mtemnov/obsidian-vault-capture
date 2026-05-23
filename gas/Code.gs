@@ -174,9 +174,7 @@ function successPage(destLabel, filename) {
     filename +
     "</p>" +
     '<div class="bar"></div>' +
-    "<script>setTimeout(function(){location.replace('" +
-    PWA_URL +
-    "')},1500);</script>" +
+    "<script>setTimeout(function(){window.close()},1500);</script>" +
     "</body></html>";
   return HtmlService.createHtmlOutput(html);
 }
