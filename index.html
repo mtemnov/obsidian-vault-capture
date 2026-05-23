@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#2d6a4f" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Capture" />
+  <title>Vault Capture</title>
+  <link rel="icon" type="image/png" href="/obsidian-vault-capture/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="/obsidian-vault-capture/icons/icon-192.png" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>Vault Capture</h1>
+    </header>
+
+    <main>
+      <!-- GAS URL is injected by main.ts from import.meta.env.VITE_APPS_SCRIPT_URL -->
+      <form id="capture-form" method="POST">
+        <input type="hidden" name="destination" value="raw" />
+        <input type="hidden" name="capture_method" id="capture-method" value="manual" />
+
+        <div class="field">
+          <label for="url">URL</label>
+          <input
+            type="url"
+            id="url"
+            name="url"
+            placeholder="https://..."
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+          />
+        </div>
+
+        <div class="field">
+          <label for="title">Title</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Optional title"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="field">
+          <label for="thought">Thought</label>
+          <textarea
+            id="thought"
+            name="thought"
+            rows="5"
+            placeholder="What's on your mind?"
+          ></textarea>
+        </div>
+
+        <div class="field hidden" id="shared-text-field">
+          <label for="shared_text">Shared text</label>
+          <textarea
+            id="shared_text"
+            name="shared_text"
+            rows="3"
+            readonly
+          ></textarea>
+        </div>
+
+        <button type="submit" id="submit-btn">
+          Save to vault
+        </button>
+      </form>
+
+      <div id="no-gas-url" class="error-banner hidden">
+        ⚠️ Apps Script URL not configured. Set <code>VITE_APPS_SCRIPT_URL</code> and rebuild.
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

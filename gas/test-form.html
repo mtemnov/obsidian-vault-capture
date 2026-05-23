@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Apps Script Form POST Test</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 480px; margin: 40px auto; padding: 0 20px; }
+    h1 { font-size: 1.2rem; }
+    label { display: block; margin-top: 12px; font-size: 0.85rem; color: #555; }
+    input, textarea { width: 100%; box-sizing: border-box; padding: 8px; margin-top: 4px; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px; }
+    button { margin-top: 20px; width: 100%; padding: 12px; background: #2d6a4f; color: #fff; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; }
+    .note { margin-top: 16px; font-size: 0.8rem; color: #888; background: #f5f5f5; padding: 10px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Apps Script Form POST Test</h1>
+  <p>Paste your deployed Apps Script URL below, fill in test data, and submit.<br>
+  You should see a "Saved ✓" page (signed in) or a Google login/error page (not signed in).</p>
+
+  <label>Apps Script URL (paste your deployed Web App URL here)</label>
+  <input type="text" id="scriptUrl" placeholder="https://script.google.com/macros/s/.../exec">
+
+  <form id="testForm" method="POST" enctype="application/x-www-form-urlencoded">
+    <input type="hidden" name="destination" value="raw">
+    <input type="hidden" name="capture_method" value="manual">
+    <input type="hidden" name="source" value="web">
+
+    <label>URL</label>
+    <input type="text" name="url" value="https://www.youtube.com/watch?v=test123">
+
+    <label>Title</label>
+    <input type="text" name="title" value="Test capture from form POST">
+
+    <label>Thought</label>
+    <textarea name="thought" rows="3">This is a test thought from the local test form.</textarea>
+
+    <label>Shared text</label>
+    <textarea name="shared_text" rows="2"></textarea>
+
+    <button type="submit">Submit (form POST)</button>
+  </form>
+
+  <div class="note">
+    <strong>What to check:</strong><br>
+    ✓ Signed into Google → "Saved ✓" page appears, .md file appears in Drive /raw<br>
+    ✓ Incognito / not signed in → Google login page or permission error (NOT a file write)
+  </div>
+
+  <script>
+    document.getElementById('testForm').addEventListener('submit', function(e) {
+      var url = document.getElementById('scriptUrl').value.trim();
+      if (!url) {
+        e.preventDefault();
+        alert('Paste your Apps Script URL first.');
+        return;
+      }
+      this.action = url;
+    });
+  </script>
+</body>
+</html>
