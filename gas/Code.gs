@@ -174,11 +174,9 @@ function successPage(destLabel, filename) {
     filename +
     "</p>" +
     '<div class="bar"></div>' +
-    "<script>setTimeout(function(){" +
-    "if(history.length>1){history.back();}else{location.replace('" +
+    "<script>setTimeout(function(){location.replace('" +
     PWA_URL +
-    "');}" +
-    "},1500);</script>" +
+    "')},1500);</script>" +
     "</body></html>";
   return HtmlService.createHtmlOutput(html);
 }
