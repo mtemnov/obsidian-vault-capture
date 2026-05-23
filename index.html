@@ -21,9 +21,9 @@
     </header>
 
     <main>
-      <!-- GAS URL injected by main.ts. Form submits into the hidden iframe so the
-           browser never navigates away — required to keep Google auth cookies. -->
-      <form id="capture-form" method="POST" target="gas-frame">
+      <!-- Full-page POST — required so Google session cookies are sent (SameSite=Lax).
+           GAS success page auto-redirects back to the PWA after ~1.5s. -->
+      <form id="capture-form" method="POST">
         <input type="hidden" name="destination" value="raw" />
         <input type="hidden" name="capture_method" id="capture-method" value="manual" />
 
@@ -82,12 +82,6 @@
       </div>
     </main>
   </div>
-
-  <!-- Invisible iframe that absorbs the GAS response -->
-  <iframe name="gas-frame" id="gas-frame" aria-hidden="true" tabindex="-1"></iframe>
-
-  <!-- Toast notification -->
-  <div id="toast" role="status" aria-live="polite"></div>
 
   <script type="module" src="/src/main.ts"></script>
 </body>

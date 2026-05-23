@@ -3,17 +3,15 @@
 
 const GAS_URL = import.meta.env.VITE_APPS_SCRIPT_URL as string | undefined;
 
-const form          = document.getElementById("capture-form")    as HTMLFormElement;
-const captureMethod = document.getElementById("capture-method")  as HTMLInputElement;
-const urlInput      = document.getElementById("url")             as HTMLInputElement;
-const titleInput    = document.getElementById("title")           as HTMLInputElement;
-const thoughtArea   = document.getElementById("thought")         as HTMLTextAreaElement;
-const sharedArea    = document.getElementById("shared_text")     as HTMLTextAreaElement;
+const form          = document.getElementById("capture-form")      as HTMLFormElement;
+const captureMethod = document.getElementById("capture-method")    as HTMLInputElement;
+const urlInput      = document.getElementById("url")               as HTMLInputElement;
+const titleInput    = document.getElementById("title")             as HTMLInputElement;
+const thoughtArea   = document.getElementById("thought")           as HTMLTextAreaElement;
+const sharedArea    = document.getElementById("shared_text")       as HTMLTextAreaElement;
 const sharedField   = document.getElementById("shared-text-field") as HTMLDivElement;
-const submitBtn     = document.getElementById("submit-btn")      as HTMLButtonElement;
-const gasFrame      = document.getElementById("gas-frame")       as HTMLIFrameElement;
-const toast         = document.getElementById("toast")           as HTMLDivElement;
-const noGasUrl      = document.getElementById("no-gas-url")      as HTMLDivElement;
+const submitBtn     = document.getElementById("submit-btn")        as HTMLButtonElement;
+const noGasUrl      = document.getElementById("no-gas-url")        as HTMLDivElement;
 
 // --- Wire GAS URL ---
 
@@ -24,24 +22,12 @@ if (!GAS_URL) {
   form.action = GAS_URL;
 }
 
-// --- Hidden-iframe submission ---
-// The form targets the hidden iframe so the browser never navigates away.
-// Google auth cookies are still sent (same as a full-page POST).
-
-let submitting = false;
+// --- Loading state on submit ---
+// Page navigates away immediately after, but this gives tactile feedback.
 
 form.addEventListener("submit", () => {
-  if (!GAS_URL) return;
-  submitting = true;
-  setLoading(true);
-});
-
-gasFrame.addEventListener("load", () => {
-  if (!submitting) return; // ignore initial empty-src load
-  submitting = false;
-  setLoading(false);
-  showToast("Saved to vault ✓", "success");
-  resetForm();
+  submitBtn.classList.add("loading");
+  submitBtn.disabled = true;
 });
 
 // --- Auto-grow textareas ---
@@ -55,35 +41,9 @@ function autoGrow(el: HTMLTextAreaElement) {
   el.addEventListener("input", () => autoGrow(el));
 });
 
-// --- Helpers ---
-
-function setLoading(on: boolean) {
-  submitBtn.classList.toggle("loading", on);
-  submitBtn.disabled = on;
-}
-
-function resetForm() {
-  urlInput.value = "";
-  titleInput.value = "";
-  thoughtArea.value = "";
-  thoughtArea.style.height = "";
-  sharedArea.value = "";
-  sharedField.classList.add("hidden");
-  captureMethod.value = "manual";
-}
-
-let toastTimer: ReturnType<typeof setTimeout> | null = null;
-
-function showToast(message: string, type: "success" | "error" = "success") {
-  if (toastTimer) clearTimeout(toastTimer);
-  toast.textContent = message;
-  toast.className = `toast toast--${type} toast--visible`;
-  toastTimer = setTimeout(() => {
-    toast.className = "toast";
-  }, 3000);
-}
-
 // --- Pre-fill from Android Share Target (GET params) ---
+// manifest share_target action points to /share-target/index.html which
+// redirects here with ?title=&text=&url= preserved.
 
 const params      = new URLSearchParams(window.location.search);
 const sharedTitle = params.get("title") ?? "";
@@ -108,6 +68,7 @@ if (sharedTitle || sharedText || sharedUrl) {
     autoGrow(sharedArea);
   }
 
+  // Clean the share params from the URL bar
   if (window.history.replaceState) {
     window.history.replaceState({}, "", import.meta.env.BASE_URL);
   }

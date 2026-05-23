@@ -196,40 +196,6 @@ button.loading .btn-spinner { display: block; }
   to { transform: rotate(360deg); }
 }
 
-/* ── Toast ───────────────────────────────────────────── */
-
-#toast {
-  position: fixed;
-  bottom: calc(env(safe-area-inset-bottom) + 24px);
-  left: 50%;
-  transform: translateX(-50%) translateY(12px);
-  background: #1e2a22;
-  color: var(--green);
-  border: 1px solid rgba(62, 207, 142, 0.25);
-  border-radius: 40px;
-  padding: 12px 22px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-  transition:
-    opacity 220ms ease,
-    transform 220ms ease;
-  z-index: 100;
-}
-
-#toast.toast--visible {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-#toast.toast--error {
-  background: #2a1a1a;
-  color: #f87171;
-  border-color: rgba(248, 113, 113, 0.25);
-}
-
 /* ── Utility ─────────────────────────────────────────── */
 
 .hidden { display: none !important; }
@@ -251,12 +217,3 @@ button.loading .btn-spinner { display: block; }
   border-radius: 4px;
 }
 
-/* Hidden GAS iframe — must be invisible but exist in DOM */
-#gas-frame {
-  position: fixed;
-  width: 0;
-  height: 0;
-  border: none;
-  opacity: 0;
-  pointer-events: none;
-}
