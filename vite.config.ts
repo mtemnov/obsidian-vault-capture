@@ -37,7 +37,7 @@ export default defineConfig({
           },
         ],
         share_target: {
-          action: BASE + "share-target/",
+          action: BASE,
           method: "GET",
           params: {
             title: "title",
