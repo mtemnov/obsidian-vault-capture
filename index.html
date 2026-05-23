@@ -24,7 +24,13 @@
       <!-- Full-page POST — required so Google session cookies are sent (SameSite=Lax).
            GAS success page auto-redirects back to the PWA after ~1.5s. -->
       <form id="capture-form" method="POST">
-        <input type="hidden" name="destination" value="raw" />
+        <div class="field">
+          <label for="destination">Destination</label>
+          <select id="destination" name="destination">
+            <option value="raw" selected>AI Brain</option>
+            <option value="personal">Personal</option>
+          </select>
+        </div>
         <input type="hidden" name="capture_method" id="capture-method" value="manual" />
 
         <div class="field">
